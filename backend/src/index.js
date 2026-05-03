@@ -13,8 +13,13 @@ const app = express();
 // ─── Middlewares ──────────────────────────────────────────────────────────────
 app.use(require("cors")({
   origin: (origin, callback) => {
-    // Allow any localhost port (5173, 5174, etc.) or no origin (Postman/mobile)
-    if (!origin || /^http:\/\/localhost:\d+$/.test(origin)) {
+    const allowed = [
+      /^http:\/\/localhost:\d+$/,                        // any localhost port (dev)
+      "https://etharaifrontend-production.up.railway.app", // production frontend URL
+      process.env.FRONTEND_URL,                          // alternative production URL via env
+    ].filter(Boolean);
+
+    if (!origin || allowed.some((p) => (p instanceof RegExp ? p.test(origin) : p === origin))) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
