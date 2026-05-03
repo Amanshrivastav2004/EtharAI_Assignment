@@ -55,7 +55,7 @@ const Dashboard = () => {
             <h1>Dashboard</h1>
             <p className="subtitle">Welcome back, <strong>{user?.name}</strong> 👋</p>
           </div>
-          <Link to="/projects/new" className="btn-primary">+ New Project</Link>
+          <Link to="/projects" state={{ openModal: true }} className="btn-primary">+ New Project</Link>
         </div>
 
         {loading ? (
@@ -84,7 +84,7 @@ const Dashboard = () => {
               {projects.length === 0 ? (
                 <div className="empty-state">
                   <p>🚀 No projects yet.</p>
-                  <Link to="/projects/new" className="btn-primary">Create your first project</Link>
+                  <Link to="/projects" state={{ openModal: true }} className="btn-primary">Create your first project</Link>
                 </div>
               ) : (
                 <div className="project-grid">
