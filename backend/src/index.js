@@ -12,19 +12,7 @@ const app = express();
 
 // ─── Middlewares ──────────────────────────────────────────────────────────────
 app.use(require("cors")({
-  origin: (origin, callback) => {
-    const allowed = [
-      /^http:\/\/localhost:\d+$/,                        // any localhost port (dev)
-      "https://etharai-frontend-production.up.railway.app", // production frontend URL
-      process.env.FRONTEND_URL,                          // alternative production URL via env
-    ].filter(Boolean);
-
-    if (!origin || allowed.some((p) => (p instanceof RegExp ? p.test(origin) : p === origin))) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: true, // This reflects the requester's origin back, allowing any site (safe for this project)
   credentials: true,
 }));
 app.use(express.json());           // Parse JSON request bodies
