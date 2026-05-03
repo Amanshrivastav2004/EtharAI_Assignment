@@ -89,6 +89,26 @@ const ProjectDetail = () => {
     }
   };
 
+  const handleDeleteTask = async (taskId) => {
+    if (!window.confirm("Delete this task?")) return;
+    try {
+      await api.delete(`/tasks/${taskId}`);
+      fetchProject();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete task");
+    }
+  };
+
+  const handleDeleteProject = async () => {
+    if (!window.confirm("Delete this entire project? This cannot be undone.")) return;
+    try {
+      await api.delete(`/projects/${projectId}`);
+      window.location.href = "/projects";
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete project");
+    }
+  };
+
   if (loading) {
     return (
       <div className="app-layout">
@@ -123,6 +143,9 @@ const ProjectDetail = () => {
           </div>
           {isAdmin && (
             <div className="header-actions">
+              <button className="btn-secondary btn-danger-text" onClick={handleDeleteProject}>
+                🗑️ Delete Project
+              </button>
               <button className="btn-secondary" onClick={() => { setModalError(""); setShowMemberModal(true); }}>
                 + Add Member
               </button>
@@ -159,7 +182,14 @@ const ProjectDetail = () => {
                   ) : (
                     tasks.filter(t => t.status === status).map((task) => (
                       <div key={task._id} className="task-card">
-                        <h4 className="task-title">{task.title}</h4>
+                        <div className="task-card-header">
+                          <h4 className="task-title">{task.title}</h4>
+                          {isAdmin && (
+                            <button className="btn-delete-task" onClick={() => handleDeleteTask(task._id)} title="Delete Task">
+                              ✕
+                            </button>
+                          )}
+                        </div>
                         {task.description && <p className="task-desc">{task.description}</p>}
                         {task.assignedTo && (
                           <div className="task-assignee">

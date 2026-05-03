@@ -561,6 +561,64 @@ input, select, textarea { font-family: inherit; }
 }
 .empty-state p { font-size: 1.1rem; }
 
+/* ─── Delete & Actions ───────────────────────────────────────────────────────── */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1.1rem;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete:hover {
+  opacity: 1;
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 5px rgba(255, 71, 87, 0.5));
+}
+
+.btn-danger-text {
+  color: #ff4757 !important;
+}
+
+.btn-danger-text:hover {
+  background: rgba(255, 71, 87, 0.1) !important;
+  border-color: #ff4757 !important;
+}
+
+.task-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.btn-delete-task {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0 0.25rem;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.btn-delete-task:hover {
+  color: #ff4757;
+}
+
 /* ─── Responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .main-content { padding: 20px 16px; }

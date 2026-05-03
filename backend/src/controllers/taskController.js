@@ -188,4 +188,38 @@ const updateTaskStatus = async (req, res) => {
   }
 };
 
-module.exports = { createTask, assignTask, updateTaskStatus };
+// @desc    Delete a task
+// @route   DELETE /api/tasks/:taskId
+// @access  Private — Admin of the project only
+const deleteTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ success: false, message: "Task not found" });
+    }
+
+    const project = await Project.findById(task.project);
+    if (!project) {
+      return res.status(404).json({ success: false, message: "Project not found" });
+    }
+
+    // Check if user is admin
+    const isAdmin = project.members.some(
+      (m) => m.user.toString() === req.user.id && m.role === "admin"
+    );
+
+    if (!isAdmin) {
+      return res.status(403).json({ success: false, message: "Only project admins can delete tasks" });
+    }
+
+    await task.deleteOne();
+
+    res.status(200).json({ success: true, message: "Task deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+module.exports = { createTask, assignTask, updateTaskStatus, deleteTask };

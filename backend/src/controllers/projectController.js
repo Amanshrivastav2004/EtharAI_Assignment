@@ -1,5 +1,6 @@
 const Project = require("../models/Project");
 const User = require("../models/User");
+const Task = require("../models/Task");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // @desc    Create a new project
@@ -149,4 +150,37 @@ const addMember = async (req, res) => {
   }
 };
 
-module.exports = { createProject, getAllProjects, getProjectById, addMember };
+// @desc    Delete a project and its tasks
+// @route   DELETE /api/projects/:projectId
+// @access  Private — Admin of the project only
+const deleteProject = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      return res.status(404).json({ success: false, message: "Project not found" });
+    }
+
+    // Check if user is admin
+    const isAdmin = project.members.some(
+      (m) => m.user.toString() === req.user.id && m.role === "admin"
+    );
+
+    if (!isAdmin) {
+      return res.status(403).json({ success: false, message: "Only admins can delete projects" });
+    }
+
+    // 1️⃣ Delete all tasks associated with this project
+    await Task.deleteMany({ project: projectId });
+
+    // 2️⃣ Delete the project
+    await project.deleteOne();
+
+    res.status(200).json({ success: true, message: "Project and its tasks deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+module.exports = { createProject, getAllProjects, getProjectById, addMember, deleteProject };

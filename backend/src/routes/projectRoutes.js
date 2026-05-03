@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { createProject, getAllProjects, getProjectById, addMember } = require("../controllers/projectController");
+const { createProject, getAllProjects, getProjectById, addMember, deleteProject } = require("../controllers/projectController");
 const { createTask } = require("../controllers/taskController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -19,5 +19,8 @@ router.post("/:projectId/members", protect, addMember);
 
 // POST /api/projects/:projectId/tasks   → Create a task (admin only)
 router.post("/:projectId/tasks", protect, createTask);
+
+// DELETE /api/projects/:projectId       → Delete a project (admin only)
+router.delete("/:projectId", protect, deleteProject);
 
 module.exports = router;

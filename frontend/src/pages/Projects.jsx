@@ -42,6 +42,18 @@ const Projects = () => {
     }
   };
 
+  const handleDeleteProject = async (e, projectId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!window.confirm("Are you sure you want to delete this project? This will remove all tasks as well.")) return;
+    try {
+      await api.delete(`/projects/${projectId}`);
+      fetchProjects();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete project");
+    }
+  };
+
   return (
     <div className="app-layout">
       <Navbar />
@@ -73,7 +85,16 @@ const Projects = () => {
                 <p className="project-desc">{p.description || "No description"}</p>
                 <div className="project-footer">
                   <span className="task-count">{p.tasks?.length || 0} tasks</span>
-                  <span className="arrow">→</span>
+                  <div className="card-actions">
+                    <button 
+                      className="btn-icon btn-delete" 
+                      onClick={(e) => handleDeleteProject(e, p._id)}
+                      title="Delete Project"
+                    >
+                      🗑️
+                    </button>
+                    <span className="arrow">→</span>
+                  </div>
                 </div>
               </Link>
             ))}
