@@ -15,7 +15,7 @@ app.use(require("cors")({
   origin: (origin, callback) => {
     const allowed = [
       /^http:\/\/localhost:\d+$/,                        // any localhost port (dev)
-      "https://etharaifrontend-production.up.railway.app", // production frontend URL
+      "https://etharai-frontend-production.up.railway.app", // production frontend URL
       process.env.FRONTEND_URL,                          // alternative production URL via env
     ].filter(Boolean);
 
