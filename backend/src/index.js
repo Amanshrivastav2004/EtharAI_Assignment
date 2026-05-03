@@ -11,10 +11,7 @@ connectDB();
 const app = express();
 
 // ─── Middlewares ──────────────────────────────────────────────────────────────
-app.use(require("cors")({
-  origin: true, // This reflects the requester's origin back, allowing any site (safe for this project)
-  credentials: true,
-}));
+app.use(require("cors")()); // Simplest version: allows all origins, all methods, no credentials needed for Bearer tokens
 app.use(express.json());           // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
