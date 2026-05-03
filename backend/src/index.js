@@ -31,10 +31,10 @@ app.use(express.json());           // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
-app.use("/api/auth",     require("./routes/authRoutes"));
-app.use("/api/users",    require("./routes/userRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/projects", require("./routes/projectRoutes"));
-app.use("/api/tasks",    require("./routes/taskRoutes"));
+app.use("/api/tasks", require("./routes/taskRoutes"));
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get("/", (req, res) => {
